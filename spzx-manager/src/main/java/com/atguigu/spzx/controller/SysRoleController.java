@@ -39,6 +39,11 @@ public class SysRoleController {
         return Result.build(null, ResultCodeEnum.SUCCESS);
     }
 
+    /**
+     * 角色
+     * @param sysRole
+     * @return
+     */
     @Operation(summary = "角色修改")
     @PutMapping("/updateRole")
     public Result updateRole(@RequestBody SysRole sysRole) {
