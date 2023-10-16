@@ -1,0 +1,29 @@
+server:
+  # 端口号
+  port: 8088
+spring:
+  # 数据库
+  datasource:
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/db_spzx?characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
+  # Redis的相关配置
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  jackson:
+    date-format: "yyyy-MM-dd HH:mm:ss"
+    time-zone: GMT+8
+#  password: 1234
+
+# mybatis的配置
+mybatis:
+  config-location: classpath:/mybatis-config.xml
+  mapper-locations: classpath:/mapper/*/*.xml
+spzx:
+  auth:
+    noAuthUrl:
+      - /admin/system/index/login
+      - /admin/system/index/generateValidateCode

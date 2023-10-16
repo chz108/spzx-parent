@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.spzx.mapper.SysUserMapper">
+
+    <sql id="user_col">
+        id,username userName ,password,name,phone,avatar,description,status,create_time,update_time,is_deleted
+    </sql>
+    <!--通过用户名查询用户的全部信息-->
+    <select id="findUserByUserName" resultType="com.atguigu.spzx.model.entity.system.SysUser">
+        select
+        <include refid="user_col"/>
+        from sys_user where username = #{userName};
+    </select>
+</mapper>

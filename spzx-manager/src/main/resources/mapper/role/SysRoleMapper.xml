@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.spzx.mapper.SysRoleMapper">
+
+    <sql id="role_col">
+        id,role_name,role_code,description,create_time,update_time,is_deleted
+    </sql>
+    <!--角色添加-->
+    <insert id="save">
+        insert into sys_role(id, role_name, role_code, description)
+        values (#{id}, #{roleName}, #{roleCode}, #{description});
+    </insert>
+    <!--角色修改-->
+    <update id="update">
+        update sys_role
+        <set>
+            <if test="roleName != null and roleName != ''">
+                role_name = #{roleName},
+            </if>
+            <if test="roleCode != null and roleCode != ''">
+                role_code = #{roleCode},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+        </set>
+        where id = #{id};
+    </update>
+
+    <!--逻辑删除,将is_deleted修改为1   1:表示已删除,0:表示未删除-->
+    <update id="delete">
+        update sys_role
+        set is_deleted = 1
+        where id = #{id};
+    </update>
+
+    <resultMap id="queryPageMap" type="com.atguigu.spzx.model.entity.system.SysRole" autoMapping="true"/>
+    <!-- 条件分页查询,并且不查询已经删除的数据-->
+    <select id="findPageRoleList" resultMap="queryPageMap">
+        select
+        <include refid="role_col"/>
+        from sys_role
+        <where>
+            <if test="roleName != null and roleName != ''">
+                role_name like concat("%",#{roleName},"%")
+            </if>
+            and is_deleted = 0
+        </where>
+        order by id desc
+    </select>
+</mapper>
