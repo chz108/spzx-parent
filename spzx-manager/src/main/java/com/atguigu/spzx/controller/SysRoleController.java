@@ -32,6 +32,11 @@ public class SysRoleController {
         return Result.build(pageInfo, ResultCodeEnum.SUCCESS);
     }
 
+    /**
+     * 角色添加
+     * @param sysRole
+     * @return
+     */
     @Operation(summary = "角色添加")
     @PostMapping("/saveRole")
     public Result saveRole(@RequestBody SysRole sysRole) {
