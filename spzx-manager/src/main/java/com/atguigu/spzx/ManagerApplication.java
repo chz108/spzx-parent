@@ -1,5 +1,6 @@
 package com.atguigu.spzx;
 
+import com.atguigu.spzx.config.MinioProperties;
 import com.atguigu.spzx.config.UserAuthProperties;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -12,7 +13,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
  */
 @SpringBootApplication
 @MapperScan("com.atguigu.spzx.mapper")
-@EnableConfigurationProperties(UserAuthProperties.class)
+@EnableConfigurationProperties({UserAuthProperties.class, MinioProperties.class})
 public class ManagerApplication {
     public static void main(String[] args) {
         SpringApplication.run(ManagerApplication.class, args);

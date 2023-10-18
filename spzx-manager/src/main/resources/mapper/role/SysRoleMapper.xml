@@ -48,4 +48,13 @@
         </where>
         order by id desc
     </select>
+    <select id="findAll" resultType="com.atguigu.spzx.model.entity.system.SysRole">
+        select
+        <include refid="role_col"/>
+        from sys_role
+        where is_deleted = 0
+    </select>
+    <select id="findByUserId" resultType="Integer">
+        select role_id from sys_user_role where user_id = #{userId}
+    </select>
 </mapper>

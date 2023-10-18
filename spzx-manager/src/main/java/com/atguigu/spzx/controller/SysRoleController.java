@@ -9,8 +9,9 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.aot.ApplicationContextAotGenerator;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * @author xiaozhen
@@ -34,6 +35,7 @@ public class SysRoleController {
 
     /**
      * 角色添加
+     *
      * @param sysRole
      * @return
      */
@@ -46,6 +48,7 @@ public class SysRoleController {
 
     /**
      * 角色
+     *
      * @param sysRole
      * @return
      */
@@ -58,6 +61,7 @@ public class SysRoleController {
 
     /**
      * 逻辑删除
+     *
      * @param id 角色id
      * @return
      */
@@ -66,5 +70,12 @@ public class SysRoleController {
     public Result deleteRole(@PathVariable Integer id) {
         sysRoleService.deleteRole(id);
         return Result.build(null, ResultCodeEnum.SUCCESS);
+    }
+
+    @Operation(summary = "查询所有角色")
+    @GetMapping("/findAllRoles/{userId}")
+    public Result findAllRoles(@PathVariable Integer userId) {
+        Map<String, Object> map = sysRoleService.findRoles(userId);
+        return Result.build(map, ResultCodeEnum.SUCCESS);
     }
 }

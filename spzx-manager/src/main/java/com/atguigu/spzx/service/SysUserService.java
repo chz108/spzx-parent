@@ -1,8 +1,10 @@
 package com.atguigu.spzx.service;
 
 import com.atguigu.spzx.model.dto.system.LoginDto;
+import com.atguigu.spzx.model.dto.system.SysUserDto;
 import com.atguigu.spzx.model.entity.system.SysUser;
 import com.atguigu.spzx.model.vo.system.LoginVo;
+import com.github.pagehelper.PageInfo;
 
 /**
  * @author xiaozhen
@@ -14,4 +16,12 @@ public interface SysUserService {
     SysUser getUserInfo(String token);
 
     void logout(String token);
+
+    PageInfo<SysUser> queryPage(Integer pageNum, Integer pageSize, SysUserDto sysUserDto);
+
+    void saveSysUser(SysUser sysUser);
+
+    void updateSysUser(SysUser sysUser);
+
+    void deleteSysUser(Integer id);
 }

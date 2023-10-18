@@ -17,4 +17,8 @@ public interface SysRoleMapper {
     void update(SysRole sysRole);
 
     void delete(Integer id);
+
+    List<SysRole> findAll();
+
+    List<Integer> findByUserId(Integer userId);
 }

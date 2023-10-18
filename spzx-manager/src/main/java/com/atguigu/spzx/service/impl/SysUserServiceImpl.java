@@ -5,10 +5,13 @@ import com.alibaba.fastjson.JSON;
 import com.atguigu.spzx.common.exception.GuiguException;
 import com.atguigu.spzx.mapper.SysUserMapper;
 import com.atguigu.spzx.model.dto.system.LoginDto;
+import com.atguigu.spzx.model.dto.system.SysUserDto;
 import com.atguigu.spzx.model.entity.system.SysUser;
 import com.atguigu.spzx.model.vo.common.ResultCodeEnum;
 import com.atguigu.spzx.model.vo.system.LoginVo;
 import com.atguigu.spzx.service.SysUserService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -17,6 +20,7 @@ import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -94,5 +98,36 @@ public class SysUserServiceImpl implements SysUserService {
     public void logout(String token) {
         // 根据token从redis中删除用户信息
         redisTemplate.delete("user:login:"+token);
+    }
+
+    @Override
+    public PageInfo<SysUser> queryPage(Integer pageNum, Integer pageSize, SysUserDto sysUserDto) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<SysUser> list = sysUserMapper.queryPage(sysUserDto);
+        return new PageInfo<>(list);
+    }
+
+    @Override
+    public void saveSysUser(SysUser sysUser) {
+        SysUser loginUser = sysUserMapper.findUserByUserName(sysUser.getUserName());
+        // 如果用户名已经存在就返回用户存在错误
+        if (loginUser != null) {
+            throw new GuiguException(ResultCodeEnum.USER_NAME_IS_EXISTS);
+        }
+        // 如果用户不存在就注册新用户,密码加密
+        // 设置状态正常
+        sysUser.setStatus(0);
+        sysUser.setPassword(DigestUtils.md5DigestAsHex(sysUser.getPassword().getBytes()));
+        sysUserMapper.save(sysUser);
+    }
+
+    @Override
+    public void updateSysUser(SysUser sysUser) {
+        sysUserMapper.update(sysUser);
+    }
+
+    @Override
+    public void deleteSysUser(Integer id) {
+        sysUserMapper.delete(id);
     }
 }

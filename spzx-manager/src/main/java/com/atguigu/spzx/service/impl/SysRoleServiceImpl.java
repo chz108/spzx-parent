@@ -10,7 +10,9 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author xiaozhen
@@ -42,6 +44,16 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Override
     public void deleteRole(Integer id) {
         sysRoleMapper.delete(id);
+    }
+
+    @Override
+    public Map<String, Object> findRoles(Integer userId) {
+        List<SysRole> list = sysRoleMapper.findAll();
+        List<Integer> listById = sysRoleMapper.findByUserId(userId);
+        Map<String, Object> map = new HashMap<>();
+        map.put("allRolesList", list);
+        map.put("RoleIds", listById);
+        return map;
     }
 
 }

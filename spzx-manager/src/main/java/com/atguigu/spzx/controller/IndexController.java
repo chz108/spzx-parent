@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.*;
  * @author xiaozhen
  * @date 2023/10/13
  */
-@Tag(name = "用户接口")
+@Tag(name = "登录接口")
 @RestController
 @RequestMapping("/admin/system/index")
 public class IndexController {
