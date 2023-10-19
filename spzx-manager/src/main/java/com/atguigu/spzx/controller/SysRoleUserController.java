@@ -6,6 +6,7 @@ import com.atguigu.spzx.model.vo.common.Result;
 import com.atguigu.spzx.model.vo.common.ResultCodeEnum;
 import com.atguigu.spzx.service.SysRoleUserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author xiaozhen
  * @date 2023/10/17
  */
+@Tag(name = "角色用户接口")
 @RestController
 @RequestMapping("/admin/system/sysRoleUser")
 public class SysRoleUserController {

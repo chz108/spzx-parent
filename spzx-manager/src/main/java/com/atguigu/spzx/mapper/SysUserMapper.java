@@ -1,6 +1,7 @@
 package com.atguigu.spzx.mapper;
 
 import com.atguigu.spzx.model.dto.system.SysUserDto;
+import com.atguigu.spzx.model.entity.system.SysMenu;
 import com.atguigu.spzx.model.entity.system.SysUser;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface SysUserMapper {
     void update(SysUser sysUser);
 
     void delete(Integer id);
+
+    List<SysMenu> findMenuByUserId(Long userId);
 }

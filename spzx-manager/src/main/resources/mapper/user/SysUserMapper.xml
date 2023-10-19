@@ -9,7 +9,7 @@
     <select id="findUserByUserName" resultType="com.atguigu.spzx.model.entity.system.SysUser">
         select
         <include refid="user_col"/>
-        from sys_user where username = #{userName}
+        from sys_user where username = #{userName} and is_deleted = 0
     </select>
     <!-- 用户条件分页-->
     <select id="queryPage" resultType="com.atguigu.spzx.model.entity.system.SysUser">
@@ -29,6 +29,12 @@
             and is_deleted = 0
         </where>
         order by id desc
+    </select>
+    <select id="findMenuByUserId" resultType="com.atguigu.spzx.model.entity.system.SysMenu">
+        SELECT DISTINCT m.*
+        FROM sys_menu m join sys_role_menu srm on m.id = srm.menu_id
+                        JOIN	sys_user_role sur ON sur.role_id = srm.role_id
+        WHERE sur.user_id = #{userId}
     </select>
 
     <!-- 用户添加-->
@@ -53,6 +59,9 @@
         </if>
         <if test="description != null and description != ''">
             description = #{description},
+        </if>
+        <if test="avatar != null and avatar != ''">
+            avatar = #{avatar},
         </if>
         <if test="status != null and status != ''">
             status = #{status},

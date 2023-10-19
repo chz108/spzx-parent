@@ -5,6 +5,7 @@ import com.atguigu.spzx.model.entity.system.SysUser;
 import com.atguigu.spzx.model.vo.common.Result;
 import com.atguigu.spzx.model.vo.common.ResultCodeEnum;
 import com.atguigu.spzx.model.vo.system.LoginVo;
+import com.atguigu.spzx.model.vo.system.SysMenuVo;
 import com.atguigu.spzx.model.vo.system.ValidateCodeVo;
 import com.atguigu.spzx.service.SysUserService;
 import com.atguigu.spzx.service.ValidateService;
@@ -13,6 +14,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 /**
  *                        _oo0oo_
  *                       o8888888o
@@ -76,5 +80,13 @@ public class IndexController {
         sysUserService.logout(token);
         return Result.build(null, ResultCodeEnum.SUCCESS);
     }
+
+    @Operation(summary = "查询用户可以可以操作的所有菜单")
+    @GetMapping("/menus")
+    public Result getMenu() {
+        List<SysMenuVo> list = sysUserService.getMenu();
+        return Result.build(list, ResultCodeEnum.SUCCESS);
+    }
+
 
 }

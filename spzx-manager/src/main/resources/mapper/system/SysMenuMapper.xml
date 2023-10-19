@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.spzx.mapper.SysMenuMapper">
+    <sql id="menu_col">
+        id,parent_id,title,component,sort_value,status,create_time,update_time,is_deleted
+    </sql>
+    <!-- 添加菜单-->
+    <insert id="save">
+        insert into sys_menu(
+            id,
+            parent_id,
+            title,
+            component,
+            sort_value,
+            status
+        ) values (
+            #{id},
+            #{parentId},
+            #{title},
+            #{component},
+            #{sortValue},
+            #{status}
+            )
+    </insert>
+    <!-- 修改菜单-->
+    <update id="update">
+        update sys_menu set
+        <if test="parentId != null and parentId != ''">
+            parent_id = #{parentId},
+        </if>
+        <if test="title != null and title != ''">
+            title = #{title},
+        </if>
+        <if test="component != null and component != ''">
+            component = #{component},
+        </if>
+        <if test="sortValue != null">
+            sort_value = #{sortValue},
+        </if>
+        <if test="status != null">
+            status = #{status},
+        </if>
+        update_time =  now()
+        where
+        id = #{id}
+    </update>
+    <!-- 删除节点-->
+    <update id="remove">
+        update sys_menu
+        set is_deleted = 1
+        where id = #{id}
+    </update>
+
+    <!-- 查询所有菜单-->
+    <select id="findAllNodes" resultType="com.atguigu.spzx.model.entity.system.SysMenu">
+        select <include refid="menu_col"></include> from sys_menu where is_deleted = 0
+    </select>
+</mapper>

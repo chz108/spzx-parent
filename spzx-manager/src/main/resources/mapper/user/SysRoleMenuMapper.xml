@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.spzx.mapper.SysRoleMenuMapper">
+    <insert id="doAssign">
+        insert into sys_role_menu(
+        role_id,
+        menu_id,
+        is_half,
+        create_time , update_time , is_deleted ) values
+        <foreach collection="menuIdList" item="menuId" separator=",">
+            (#{roleId},#{menuId.id},#{menuId.isHalf},now(),now(),0)
+        </foreach>
+    </insert>
+
+    <delete id="deleteByRoleId">
+        delete
+        from sys_role_menu
+        where role_id = #{roleId}
+    </delete>
+    <select id="findMenuByRoleId" resultType="long">
+        select menu_id from sys_role_menu where role_id = #{roleId} and is_deleted = 0 and is_half = 0
+    </select>
+</mapper>

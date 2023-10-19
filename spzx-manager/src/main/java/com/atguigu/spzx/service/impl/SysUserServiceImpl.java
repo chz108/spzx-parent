@@ -6,20 +6,27 @@ import com.atguigu.spzx.common.exception.GuiguException;
 import com.atguigu.spzx.mapper.SysUserMapper;
 import com.atguigu.spzx.model.dto.system.LoginDto;
 import com.atguigu.spzx.model.dto.system.SysUserDto;
+import com.atguigu.spzx.model.entity.system.SysMenu;
 import com.atguigu.spzx.model.entity.system.SysUser;
 import com.atguigu.spzx.model.vo.common.ResultCodeEnum;
 import com.atguigu.spzx.model.vo.system.LoginVo;
+import com.atguigu.spzx.model.vo.system.SysMenuVo;
 import com.atguigu.spzx.service.SysUserService;
+import com.atguigu.spzx.utils.AuthContextUtil;
+import com.atguigu.spzx.utils.MenuHelper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -32,6 +39,7 @@ import java.util.concurrent.TimeUnit;
 public class SysUserServiceImpl implements SysUserService {
     @Autowired
     private SysUserMapper sysUserMapper;
+
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
@@ -129,5 +137,36 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public void deleteSysUser(Integer id) {
         sysUserMapper.delete(id);
+    }
+
+    @Override
+    public List<SysMenuVo> getMenu() {
+        // 1. 通过ThreadLocal获取登录的用户信息
+        SysUser sysUser = AuthContextUtil.get();
+        Long userId = sysUser.getId();
+        // 2. 通过userId查询这个用户的菜单列表
+        List<SysMenu> sysMenus = sysUserMapper.findMenuByUserId(userId);
+        List<SysMenu> buildTree = MenuHelper.buildTree(sysMenus);
+        // 现在得到的是SysMenu对象,需要返回的数据是SysMenuVo对象,所以需要将SysMenu对象转成SysMenuVo对象
+        List<SysMenuVo> list = buildSysMenuVo(buildTree);
+        return list;
+    }
+
+    private static List<SysMenuVo> buildSysMenuVo(List<SysMenu> buildTree) {
+        ArrayList<SysMenuVo> list = new ArrayList<>();
+        for (SysMenu sysMenu : buildTree) {
+            SysMenuVo sysMenuVo = new SysMenuVo();
+            sysMenuVo.setTitle(sysMenu.getTitle());
+            sysMenuVo.setName(sysMenu.getComponent());
+            List<SysMenu> children = sysMenu.getChildren();
+            // 判断是否为空,不为放入
+            if (!CollectionUtils.isEmpty(children)) {
+                // 递归层级遍历
+                sysMenuVo.setChildren(buildSysMenuVo(children));
+            }
+            // 将对象放入集合中
+            list.add(sysMenuVo);
+        }
+        return list;
     }
 }
