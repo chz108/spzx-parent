@@ -16,9 +16,7 @@
     </insert>
     <update id="update">
         update brand
-        set
-            name=#{name},
-            logo=#{logo};
+        set name=#{name},logo=#{logo};
         where id = #{id}
     </update>
     <update id="delete">
