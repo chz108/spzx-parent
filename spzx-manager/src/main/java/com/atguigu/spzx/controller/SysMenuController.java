@@ -4,6 +4,7 @@ import com.atguigu.spzx.model.entity.system.SysMenu;
 import com.atguigu.spzx.model.vo.common.Result;
 import com.atguigu.spzx.model.vo.common.ResultCodeEnum;
 import com.atguigu.spzx.service.SysMenuService;
+import com.atguigu.spzx.service.SysRoleMenuService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class SysMenuController {
     @Autowired
     private SysMenuService sysMenuService;
 
+
     @Operation(summary = "菜单分级查询")
     @GetMapping("/findNodes")
     public Result findNodes() {
@@ -33,6 +35,7 @@ public class SysMenuController {
     @Operation(summary = "添加菜单")
     @PostMapping("/save")
     public Result save(@RequestBody SysMenu sysMenu) {
+
         sysMenuService.save(sysMenu);
         return Result.build(null, ResultCodeEnum.SUCCESS);
     }

@@ -30,11 +30,12 @@
         </where>
         order by id desc
     </select>
+    <!--通过用户查询用户所拥有的菜单-->
     <select id="findMenuByUserId" resultType="com.atguigu.spzx.model.entity.system.SysMenu">
         SELECT DISTINCT m.*
         FROM sys_menu m join sys_role_menu srm on m.id = srm.menu_id
                         JOIN	sys_user_role sur ON sur.role_id = srm.role_id
-        WHERE sur.user_id = #{userId}
+        WHERE sur.user_id = #{userId} and m.is_deleted = 0
     </select>
 
     <!-- 用户添加-->

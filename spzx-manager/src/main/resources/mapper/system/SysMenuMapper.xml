@@ -53,6 +53,11 @@
 
     <!-- 查询所有菜单-->
     <select id="findAllNodes" resultType="com.atguigu.spzx.model.entity.system.SysMenu">
-        select <include refid="menu_col"></include> from sys_menu where is_deleted = 0
+        select
+        <include refid="menu_col"/>
+        from sys_menu where is_deleted = 0 order by id desc
+    </select>
+    <select id="findParent" resultType="com.atguigu.spzx.model.entity.system.SysMenu">
+        select <include refid="menu_col"/> from sys_menu where id = #{parentId}
     </select>
 </mapper>

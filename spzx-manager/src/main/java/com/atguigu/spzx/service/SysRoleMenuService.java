@@ -12,4 +12,5 @@ public interface SysRoleMenuService {
     Map<String, Object> findMenu(Integer roleId);
 
     void doAssign(AssginMenuDto assginMenuDto);
+
 }

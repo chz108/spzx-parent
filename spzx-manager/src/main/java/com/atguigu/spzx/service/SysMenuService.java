@@ -16,4 +16,5 @@ public interface SysMenuService {
     void updateById(SysMenu sysMenu);
 
     void removeById(Long id);
+
 }

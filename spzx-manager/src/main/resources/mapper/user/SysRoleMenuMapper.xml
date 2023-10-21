@@ -11,6 +11,9 @@
             (#{roleId},#{menuId.id},#{menuId.isHalf},now(),now(),0)
         </foreach>
     </insert>
+    <update id="updateISHalf">
+        UPDATE sys_role_menu set is_half = 1 where menu_id = #{id}
+    </update>
 
     <delete id="deleteByRoleId">
         delete

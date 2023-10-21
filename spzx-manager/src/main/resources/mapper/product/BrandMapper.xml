@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.spzx.mapper.BrandMapper">
+    <sql id="brand_col">
+        id,name,logo,create_time,update_time,is_deleted
+    </sql>
+    <insert id="save">
+        insert into brand (<include refid="brand_col"/>) values (
+                     #{id},
+                     #{name},
+                     #{logo},
+                     now(),
+                     now(),
+                     0
+                 )
+    </insert>
+    <update id="update">
+        update brand
+        set
+            name=#{name},
+            logo=#{logo};
+        where id = #{id}
+    </update>
+    <update id="delete">
+        update brand set is_deleted = 1 where id = #{id}
+    </update>
+
+    <select id="findAll" resultType="com.atguigu.spzx.model.entity.product.Brand">
+        select
+        <include refid="brand_col"/>
+        from brand
+        where is_deleted= 0
+    </select>
+    <select id="findBrandByName" resultType="com.atguigu.spzx.model.entity.product.Brand">
+        select <include refid="brand_col"/> from brand where name = #{name} and is_deleted = 0
+    </select>
+</mapper>

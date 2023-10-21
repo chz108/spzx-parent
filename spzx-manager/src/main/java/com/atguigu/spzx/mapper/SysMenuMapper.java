@@ -16,4 +16,6 @@ public interface SysMenuMapper {
     void update(SysMenu sysMenu);
 
     void remove(Long id);
+
+    SysMenu findParent(Long parentId);
 }
