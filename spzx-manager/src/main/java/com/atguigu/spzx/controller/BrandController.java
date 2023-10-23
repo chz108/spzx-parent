@@ -9,6 +9,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.PreparedStatement;
+import java.util.List;
+
 /**
  * @author xiaozhen
  * @date 2023/10/20
@@ -47,5 +50,11 @@ public class BrandController {
     public Result deleteById(@PathVariable Integer id) {
         brandService.deleteById(id);
         return Result.build(null, ResultCodeEnum.SUCCESS);
+    }
+    @Operation(summary = "分页查询")
+    @GetMapping("/findAll")
+    public Result findAll(){
+        List<Brand> list = brandService.findAll();
+        return Result.build(list, ResultCodeEnum.SUCCESS);
     }
 }

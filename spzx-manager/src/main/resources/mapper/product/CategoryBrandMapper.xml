@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.spzx.mapper.CategoryBrandMapper">
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="categoryBrand_col">
+        id,brand_id,category_id,create_time,update_time,is_deleted
+    </sql>
+
+    <sql id="findPageWhere">
+        <where>
+            <if test="brandId != null and brandId != ''">
+                and cb.brand_id = #{brandId}
+            </if>
+            <if test="categoryId != null and categoryId != ''">
+                and cb.category_id = #{categoryId}
+            </if>
+            and cb.is_deleted = 0
+        </where>
+    </sql>
+    <insert id="save">
+        insert into category_brand(
+            id,
+            brand_id,
+            category_id,
+            create_time,
+            update_time ,
+            is_deleted
+                )
+        values (
+                 #{id},
+                 #{brandId},
+                 #{categoryId},
+                 now(),
+                 now(),
+                 0
+                )
+    </insert>
+    <update id="update">
+        update category_brand
+        <set>
+            <if test="brandId != null and brandId != ''">
+                brand_id = #{brandId},
+            </if>
+            <if test="categoryId != null and categoryId != ''">
+                category_id = #{categoryId},
+            </if>
+            update_time =  now()
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="delete">
+        delete
+        from category_brand
+        where id = #{id};
+    </delete>
+
+    <select id="queryPage" resultType="com.atguigu.spzx.model.entity.product.CategoryBrand">
+        SELECT cb.id,cb.brand_id,cb.category_id,cb.create_time,cb.update_time,
+        c.name as categoryName,
+        b.name as brandName, b.logo
+        FROM category_brand cb JOIN brand b ON cb.brand_id = b.id
+                               JOIN category c ON cb.category_id = c.id
+        <where>
+            <if test="brandId != null and brandId != ''">
+                b.id = #{brandId} and
+            </if>
+            <if test="categoryId != null and categoryId != ''">
+                c.id = #{categoryId} and
+            </if>
+             cb.is_deleted = 0
+        </where>
+        order by cb.id desc
+    </select>
+    <select id="findBrandByCategoryId" resultType="com.atguigu.spzx.model.entity.product.Brand">
+        SELECT b.name
+        FROM brand b JOIN category_brand cb
+                          ON b.id = cb.brand_id
+        WHERE cb.category_id = #{categoryId} and is_deleted = 0
+        ORDER BY cb.id desc
+    </select>
+</mapper>

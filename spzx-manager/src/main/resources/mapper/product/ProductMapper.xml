@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.spzx.mapper.ProductMapper">
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="columns">
+        id,name,brand_id,category1_id,category2_id,category3_id,unit_name,slider_urls,spec_value,status,audit_status,audit_message,create_time,update_time,is_deleted
+    </sql>
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        insert into product (
+            id,
+            name,
+            brand_id,
+            category1_id,
+            category2_id,
+            category3_id,
+            unit_name,
+            slider_urls,
+            spec_value,
+            status,
+            audit_status,
+            audit_message,
+            create_time,
+            update_time,
+            is_deleted
+        ) values (
+                     #{id},
+                     #{name},
+                     #{brandId},
+                     #{category1Id},
+                     #{category2Id},
+                     #{category3Id},
+                     #{unitName},
+                     #{sliderUrls},
+                     #{specValue},
+                     #{status},
+                     #{auditStatus},
+                     #{auditMessage},
+                     now(),
+                     now() ,
+                     0
+                 )
+    </insert>
+
+    <select id="queryPage" resultType="com.atguigu.spzx.model.entity.product.Product">
+        SELECT  p.id, p.name , p.brand_id , p.category1_id , p.category2_id , p.category3_id, p.unit_name,
+        p.slider_urls , p.spec_value , p.status , p.audit_status , p.audit_message , p.create_time , p.update_time , p.is_deleted ,
+        b.name brandName , c1.name category1Name , c2.name category2Name , c2.name category3Name
+        FROM product p
+                 JOIN brand b ON p.brand_id = b.id
+                 JOIN category c1 ON p.category1_id = c1.id
+                 JOIN category c2 ON p.category2_id = c2.id
+                 JOIN category c3 ON p.category3_id = c3.id
+        <where>
+            <if test="brandId != null and brandId != ''">
+                p.brand_id = #{brandId}
+            </if>
+            <if test="category1Id != null and category1Id != ''">
+                p.category1_id = #{category1Id}
+            </if>
+            <if test="category2Id != null and category2Id != ''">
+                p.category2_id = #{category2Id}
+            </if>
+            <if test="category3Id != null and category3Id != ''">
+                p.category3_id = #{category3Id}
+            </if>
+        </where>
+    </select>
+    <!-- 查询产品的所有的信息-->
+    <select id="findAll" resultType="com.atguigu.spzx.model.entity.product.Product">
+        select
+        <include refid="columns"/>
+        from product where is_deleted = 0 order by id desc
+    </select>
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.spzx.mapper.ProductUnitMapper">
+
+    <sql id="productUnit_col">
+        id,name,create_time,update_time,is_deleted
+    </sql>
+
+    <select id="findAll" resultType="com.atguigu.spzx.model.entity.base.ProductUnit">
+        select <include refid="productUnit_col"/>
+        from product_unit
+        where is_deleted = 0
+        order by id desc
+    </select>
+</mapper>

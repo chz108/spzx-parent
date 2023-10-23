@@ -14,14 +14,16 @@
                      0
                  )
     </insert>
+    <!--通过品牌名称修改品牌logo-->
     <update id="update">
         update brand
-        set name=#{name},logo=#{logo};
+        set logo=#{logo},name=#{name}
         where id = #{id}
     </update>
-    <update id="delete">
-        update brand set is_deleted = 1 where id = #{id}
-    </update>
+    <!--物理删除-->
+    <delete id="delete">
+        delete from brand where id = #{id}
+    </delete>
 
     <select id="findAll" resultType="com.atguigu.spzx.model.entity.product.Brand">
         select
