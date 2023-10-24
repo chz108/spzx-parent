@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.atguigu.spzx.mapper.ProductDetailsMapper">
+    <sql id="detail_col">
+        id,product_id,image_urls,create_time,update_time,is_deleted
+    </sql>
+
    <insert id="save" useGeneratedKeys="true" keyProperty="id">
         insert into product_details (
             id,
@@ -16,5 +20,22 @@
                      0
                  )
         </insert>
+    <update id="update">
+        update product_details set
+        <if test="imageUrls != null and imageUrls != ''">
+            image_urls = #{imageUrls},
+        </if>
+        update_time = now()
+        where
+        product_id = #{productId}
+    </update>
+    <update id="delete">
+        update product_details set is_deleted = 1 where product_id = #{id}
+    </update>
+    <select id="findProductDetailsById" resultType="com.atguigu.spzx.model.entity.product.ProductDetails">
+        select <include refid="detail_col"/>
+        from product_details
+        where product_id = #{id} and is_deleted = 0
+    </select>
 
 </mapper>

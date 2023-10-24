@@ -37,4 +37,42 @@ public class ProductController {
         productService.save(product);
         return Result.build(null, ResultCodeEnum.SUCCESS);
     }
+
+    @Operation(summary = "商品信息回显")
+    @GetMapping("/getById/{id}")
+    public Result getById(@PathVariable Long id) {
+        Product product = productService.getById(id);
+        return Result.build(product, ResultCodeEnum.SUCCESS);
+    }
+
+    @Operation(summary = "修改商品信息")
+    @PutMapping("/updateById")
+    public Result updateById(@RequestBody Product product) {
+        productService.updateById(product);
+        return Result.build(null, ResultCodeEnum.SUCCESS);
+    }
+
+    @Operation(summary = "删除商品信息")
+    @DeleteMapping("/deleteById/{id}")
+    public Result deleteById(@PathVariable Long id) {
+        productService.deleteById(id);
+        return Result.build(null, ResultCodeEnum.SUCCESS);
+    }
+
+    @Operation(summary = "商品审核")
+    @GetMapping("/updateAuditStatus/{id}/{auditStatus}")
+    public Result updateAuditStatus(@PathVariable Long id,
+                             @PathVariable Integer auditStatus) {
+        productService.updateAuditStatus(id,auditStatus);
+        return Result.build(null, ResultCodeEnum.SUCCESS);
+    }
+
+
+    @Operation(summary = "商品上下架")
+    @GetMapping("/updateStatus/{id}/{status}")
+    public Result updateStatus(@PathVariable Long id,
+                                    @PathVariable Integer status) {
+        productService.updateStatus(id,status);
+        return Result.build(null, ResultCodeEnum.SUCCESS);
+    }
 }

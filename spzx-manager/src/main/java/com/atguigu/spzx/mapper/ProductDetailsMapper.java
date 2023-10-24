@@ -8,4 +8,10 @@ import com.atguigu.spzx.model.entity.product.ProductDetails;
  */
 public interface ProductDetailsMapper {
     void save(ProductDetails productDetails);
+
+    ProductDetails findProductDetailsById(Long id);
+
+    void update(ProductDetails productDetails);
+
+    void delete(Long id);
 }

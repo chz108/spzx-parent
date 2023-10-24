@@ -63,20 +63,20 @@
                                JOIN category c ON cb.category_id = c.id
         <where>
             <if test="brandId != null and brandId != ''">
-                b.id = #{brandId} and
+                and b.id = #{brandId}
             </if>
             <if test="categoryId != null and categoryId != ''">
-                c.id = #{categoryId} and
+                and c.id = #{categoryId}
             </if>
-             cb.is_deleted = 0
+             and cb.is_deleted = 0
         </where>
         order by cb.id desc
     </select>
     <select id="findBrandByCategoryId" resultType="com.atguigu.spzx.model.entity.product.Brand">
-        SELECT b.name
+        SELECT b.name,b.id
         FROM brand b JOIN category_brand cb
                           ON b.id = cb.brand_id
-        WHERE cb.category_id = #{categoryId} and is_deleted = 0
+        WHERE cb.category_id = #{categoryId} and b.is_deleted = 0
         ORDER BY cb.id desc
     </select>
 </mapper>

@@ -15,4 +15,11 @@ public interface ProductMapper {
     List<Product> findAll();
 
     void save(Product product);
+
+    Product findProductById(Long id);
+
+    void update(Product product);
+
+    void delete(Long id);
+
 }
