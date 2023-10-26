@@ -1,5 +1,6 @@
 package com.atguigu.spzx;
 
+import com.atguigu.spzx.common.log.aspect.EnableLogAspect;
 import com.atguigu.spzx.config.MinioProperties;
 import com.atguigu.spzx.config.UserAuthProperties;
 import org.mybatis.spring.annotation.MapperScan;
@@ -15,6 +16,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @MapperScan("com.atguigu.spzx.mapper")
 @EnableScheduling
+@EnableLogAspect
 @EnableConfigurationProperties({UserAuthProperties.class, MinioProperties.class})
 public class ManagerApplication {
     public static void main(String[] args) {

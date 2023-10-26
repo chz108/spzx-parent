@@ -1,5 +1,7 @@
 package com.atguigu.spzx.controller;
 
+import com.atguigu.spzx.common.log.annotation.Log;
+import com.atguigu.spzx.common.log.enums.OperatorType;
 import com.atguigu.spzx.model.entity.product.Brand;
 import com.atguigu.spzx.model.vo.common.Result;
 import com.atguigu.spzx.model.vo.common.ResultCodeEnum;
@@ -23,6 +25,7 @@ public class BrandController {
     @Autowired
     private BrandService brandService;
 
+    @Log(title = "品牌管理:列表", operatorType = OperatorType.MANAGE, businessType = 0, isSaveRequestData = true, isSaveResponseData = true)
     @Operation(summary = "分页查询")
     @GetMapping("/{pageNum}/{pageSize}")
     public Result queryPage(@PathVariable Integer pageNum,
