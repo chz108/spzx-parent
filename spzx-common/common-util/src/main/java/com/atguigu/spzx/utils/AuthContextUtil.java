@@ -1,6 +1,7 @@
 package com.atguigu.spzx.utils;
 
 import com.atguigu.spzx.model.entity.system.SysUser;
+import com.atguigu.spzx.model.entity.user.UserInfo;
 
 /**
  * @author xiaozhen
@@ -19,5 +20,17 @@ public class AuthContextUtil {
 
     public static void remove() {
         threadLocal.remove();
+    }
+
+    private static ThreadLocal<UserInfo> threadLocalUserInfo = new ThreadLocal<>();
+
+    public static void setUserInfo(UserInfo userInfo) {
+        threadLocalUserInfo.set(userInfo);
+    }
+    public static UserInfo getUserInfo() {
+        return threadLocalUserInfo.get();
+    }
+    public static void removeUserInfo() {
+        threadLocalUserInfo.remove();
     }
 }

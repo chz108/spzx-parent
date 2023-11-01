@@ -13,4 +13,48 @@
         ORDER BY sku.sale_num DESC
         LIMIT 2
     </select>
+    <select id="queryPage" resultType="com.atguigu.spzx.model.entity.product.ProductSku">
+        SELECT
+        sku.id,sku.sku_code,sku.sku_name,sku.product_id,sku.thumb_img,sku.sale_price,sku.market_price,sku.cost_price,sku.stock_num,sku.sale_num,sku.sku_spec,sku.weight,sku.volume,sku.status,sku.create_time,sku.update_time,sku.is_deleted
+        FROM product_sku sku JOIN product p ON sku.product_id = p.id
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and sku.sku_name like concat('%',#{keyword},'%')
+            </if>
+            <if test="brandId != null and brandId != ''">
+                and p.brand_id = #{brandId}
+            </if>
+            <if test="category1Id != null and category1Id != ''">
+                and p.category1_id = #{category1Id}
+            </if>
+            <if test="category2Id != null and category2Id != ''">
+                and p.category2_id = #{category2Id}
+            </if>
+            <if test="category3Id != null and category3Id != ''">
+                and p.category3_id = #{category3Id}
+            </if>
+            and sku.is_deleted = 0
+            and p.status = 1
+            and p.is_deleted = 0
+        </where>
+        <if test="order == 1">
+            order by sku.sale_num desc
+        </if>
+        <if test="order == 2">
+            order by sku.sale_price asc
+        </if>
+        <if test="order == 3 ">
+            order by sku.sale_price desc
+        </if>
+    </select>
+
+    <sql id="col">
+        id,name,brand_id,category1_id,category2_id,category3_id,unit_name,slider_urls,spec_value,status,audit_status,audit_message,create_time,update_time,is_deleted
+    </sql>
+
+    <select id="findProductById" resultType="com.atguigu.spzx.model.entity.product.Product">
+        select <include refid="col"/>
+        from product
+        where id = #{productId} and is_deleted = 0
+    </select>
 </mapper>

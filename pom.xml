@@ -14,7 +14,6 @@
         <module>spzx-manager</module>
         <module>spzx-server-gateway</module>
         <module>spzx-service</module>
-        <module>spzx-service/service-user</module>
         <module>spzx-service-client</module>
     </modules>
 
