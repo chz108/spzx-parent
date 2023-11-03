@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.spzx.user.mapper.UserCollectMapper">
+    <insert id="collect">
+        insert into user_collect(user_id, sku_id)
+        values (#{userId}, #{skuId});
+    </insert>
+    <select id="findCollect" resultType="com.atguigu.spzx.model.entity.h5.UserCollect">
+        select *
+        from user_collect
+        where user_id=#{userId} and sku_id = #{skuId}
+    </select>
+    <select id="queryCollectPage" resultType="com.atguigu.spzx.model.entity.h5.UserCollect">
+        select *
+        from user_collect
+        where user_id = #{userId};
+    </select>
+</mapper>

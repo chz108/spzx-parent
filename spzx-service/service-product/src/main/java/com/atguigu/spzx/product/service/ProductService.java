@@ -17,4 +17,6 @@ public interface ProductService {
     PageInfo<ProductSku> queryPage(Integer page, Integer limit, ProductSkuDto productSkuDto);
 
     ProductItemVo item(Integer skuId);
+
+    ProductSku getBySkuId(Integer skuId);
 }

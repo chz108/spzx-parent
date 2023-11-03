@@ -46,6 +46,7 @@ public class UserInfoController {
         return Result.build(token, ResultCodeEnum.SUCCESS);
     }
 
+    @Operation(summary = "获取当前登录用户信息")
     @GetMapping("/auth/getCurrentUserInfo")
     public Result getCurrentUserInfo() {
         UserInfo userInfo = AuthContextUtil.getUserInfo();
@@ -57,5 +58,29 @@ public class UserInfoController {
    /* public Result getCurrentUserInfo(@RequestHeader String token){
         UserInfoVo userInfoVo = userInfoService.getCurrentUserInfo(token);
         return Result.build(userInfoVo, ResultCodeEnum.SUCCESS);
+    }*/
+
+
+    @Operation(summary = "当前用户是否收藏商品")
+    @GetMapping("/isCollect/{skuId}")
+    public Result isCollect(@PathVariable Long skuId) {
+        Boolean result = userInfoService.isCollect(skuId);
+        return Result.build(result, ResultCodeEnum.SUCCESS);
+    }
+
+
+    @Operation(summary = "当前用户收藏商品")
+    @GetMapping("/auth/collect/{skuId}")
+    public Result collect(@PathVariable Long skuId) {
+        Boolean result = userInfoService.collect(skuId);
+        return Result.build(result, ResultCodeEnum.SUCCESS);
+    }
+
+
+   /* @Operation(summary = "当前用户收藏商品")
+    @GetMapping("/auth/findUserCollectPage/{page}/{limit}")
+    public Result findUserCollectPage(@PathVariable Long page, @PathVariable Long limit) {
+        PageInfo<UserCollect> pageInfo = userInfoService.findUserCollectPage(page,limit);
+        return Result.build(pageInfo, ResultCodeEnum.SUCCESS);
     }*/
 }

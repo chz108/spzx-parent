@@ -82,4 +82,9 @@ public class ProductServiceImpl implements ProductService {
         return productItemVo;
     }
 
+    @Override
+    public ProductSku getBySkuId(Integer skuId) {
+        return productSkuMapper.findProductSkuById(skuId);
+    }
+
 }

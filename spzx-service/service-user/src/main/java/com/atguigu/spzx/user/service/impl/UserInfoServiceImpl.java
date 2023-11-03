@@ -4,17 +4,23 @@ import com.alibaba.fastjson.JSON;
 import com.atguigu.spzx.common.exception.GuiguException;
 import com.atguigu.spzx.model.dto.h5.UserLoginDto;
 import com.atguigu.spzx.model.dto.h5.UserRegisterDto;
+import com.atguigu.spzx.model.entity.h5.UserCollect;
 import com.atguigu.spzx.model.entity.user.UserInfo;
 import com.atguigu.spzx.model.vo.common.ResultCodeEnum;
 import com.atguigu.spzx.model.vo.h5.UserInfoVo;
+import com.atguigu.spzx.user.mapper.UserCollectMapper;
 import com.atguigu.spzx.user.mapper.UserInfoMapper;
 import com.atguigu.spzx.user.service.UserInfoService;
+import com.atguigu.spzx.utils.AuthContextUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -26,6 +32,9 @@ import java.util.concurrent.TimeUnit;
 public class UserInfoServiceImpl implements UserInfoService {
     @Autowired
     private UserInfoMapper userInfoMapper;
+
+    @Autowired
+    private UserCollectMapper userCollectMapper;
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
@@ -106,6 +115,33 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfoVo userInfoVo = new UserInfoVo();
         BeanUtils.copyProperties(userInfo, userInfoVo);
         return userInfoVo;
+    }
+
+    /**
+     * 当前用户是否收藏商品
+     * @param skuId
+     * @return
+     */
+    @Override
+    public Boolean isCollect(Long skuId) {
+        Long userId = AuthContextUtil.getUserInfo().getId();
+        UserCollect userCollect = userCollectMapper.findCollect(userId, skuId);
+        return userCollect != null;
+    }
+
+    @Override
+    public Boolean collect(Long skuId) {
+        Long userId = AuthContextUtil.getUserInfo().getId();
+        Integer result = userCollectMapper.collect(userId, skuId);
+        return result == 1;
+    }
+
+    @Override
+    public PageInfo<UserCollect> findUserCollectPage(Long page, Long limit) {
+        Long userId = AuthContextUtil.getUserInfo().getId();
+        PageHelper.startPage(page.intValue(), limit.intValue());
+        List<UserCollect> userCollectList = userCollectMapper.queryCollectPage(userId);
+        return new PageInfo<>(userCollectList);
     }
 
 }

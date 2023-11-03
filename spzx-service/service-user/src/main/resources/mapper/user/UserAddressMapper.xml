@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.spzx.user.mapper.UserAddressMapper">
+    <sql id="address_col">
+        id,user_id,name,phone,tag_name,province_code,city_code,district_code,address,full_address,is_default,create_time,update_time,is_deleted
+    </sql>
+    <insert id="save">
+        insert into user_address(
+                    <include refid="address_col"/>
+        )values (
+            #{id},
+            #{userId},
+            #{phone},
+            #{tagName},
+            #{provinceCode},
+            #{cityCode},
+                 #{districtCode},
+                 #{address},
+                 #{fullAddress},
+                 #{isDefault},
+                 now(),
+                 now(),
+                 0
+        )
+    </insert>
+    <update id="update">
+        update user_address
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="tagName != null">
+                tag_name = #{tagName},
+            </if>
+            <if test="provinceCode != null">
+                province_code = #{provinceCode},
+            </if>
+            <if test="cityCode != null">
+                city_code = #{cityCode},
+            </if>
+            <if test="districtCode != null">
+                district_code = #{districtCode},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="fullAddress != null">
+                full_address = #{fullAddress},
+            </if>
+            <if test="isDefault != null">
+                is_default = #{isDefault},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="remove">
+        delete
+        from user_address
+        where id = #{id};
+    </delete>
+
+    <select id="findAddressByUserId" resultType="com.atguigu.spzx.model.entity.user.UserAddress">
+        select <include refid="address_col"/>
+        from user_address
+        where user_id = #{id} and is_deleted = 0
+    </select>
+</mapper>
